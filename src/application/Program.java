@@ -14,10 +14,13 @@ public class Program {
     Scanner sc = new Scanner(System.in);
     List<Task> tasks = new ArrayList<>();
 
+
     while (true) {
       System.out.println();
-      System.out.println("what you what to do? ");
+      System.out.println("#Task Manager:");
+      System.out.println("What you what to do? ");
       System.out.println("Add Tasks (a)");
+      System.out.println("Update Tasks (u)");
       System.out.println("Remove Tasks (r)");
       char command = sc.nextLine().charAt(0);
       String description = null;
@@ -42,28 +45,36 @@ public class Program {
         System.out.print("Status (pending/ongoing/completed): ");
         String status = sc.nextLine().toUpperCase();
         Task task = new Task(title, description, dueDate, Priority.valueOf(priority), Status.valueOf(status));
-
         int position = 0;
         while (position < tasks.size() && (tasks.get(position).getStatus() != Status.COMPLETED)) {
           position++;
         }
-
         tasks.add(position, task);
-
         System.out.println();
         System.out.println("-------------------------------------------------");
         System.out.println();
+      } else {
+        System.out.print("Which task you what to delete (number)? ");
+        tasks.remove(sc.nextInt() - 1);
+        sc.nextLine();
+        System.out.println();
       }
-      System.out.println("Tasks: ");
 
+      System.out.println("Tasks: ");
       for (int i = 0; i < tasks.size(); i++) {
-        System.out.println("# Task " + (i + 1) + ":");
-        test(i, tasks ,sdf);
+        if (tasks.get(i).getStatus() == Status.COMPLETED) {
+          System.out.print(ANSI_WHITE);
+          System.out.println("# Task " + (i + 1) + ":");
+          print(i, tasks, sdf);
+          System.out.print(ANSI_RESET);
+        } else {
+          print(i, tasks, sdf);
+        }
       }
     }
   }
 
-  private static void test(int i, List<Task> tasks, SimpleDateFormat sdf) {
+  private static void print(int i, List<Task> tasks, SimpleDateFormat sdf) {
     System.out.println("Title: " + tasks.get(i).getTitle());
     if (tasks.get(i).getDescription() != null) {
       System.out.println("Description: " + tasks.get(i).getDescription());
@@ -72,6 +83,31 @@ public class Program {
       System.out.println("Due Date: " + sdf.format(tasks.get(i).getDueDate()));
     }
     System.out.println("Priority: " + tasks.get(i).getPriority());
-    System.out.println("Status: " + tasks.get(i).getStatus());
+    if (tasks.get(i).getStatus() == Status.COMPLETED) {
+      System.out.println("Status: " + ANSI_GREEN_BACKGROUND + ANSI_BLACK + tasks.get(i).getStatus() + ANSI_RESET);
+    } else if (tasks.get(i).getStatus() == Status.PENDING) {
+      System.out.println("Status: " + ANSI_RED_BACKGROUND + ANSI_BLACK + tasks.get(i).getStatus() + ANSI_RESET);
+    } else {
+      System.out.println("Status: " + ANSI_YELLOW_BACKGROUND + ANSI_BLACK + tasks.get(i).getStatus() + ANSI_RESET);
+    }
   }
+
+  public static final String ANSI_RESET = "\u001B[0m";
+  public static final String ANSI_BLACK = "\u001B[30m";
+  public static final String ANSI_RED = "\u001B[31m";
+  public static final String ANSI_GREEN = "\u001B[32m";
+  public static final String ANSI_YELLOW = "\u001B[33m";
+  public static final String ANSI_BLUE = "\u001B[34m";
+  public static final String ANSI_PURPLE = "\u001B[35m";
+  public static final String ANSI_CYAN = "\u001B[36m";
+  public static final String ANSI_WHITE = "\u001B[37m";
+
+  public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+  public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
+  public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+  public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+  public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
+  public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
+  public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
+  public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 }

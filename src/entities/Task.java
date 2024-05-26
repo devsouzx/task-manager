@@ -3,7 +3,6 @@ package entities;
 import entities.enums.Priority;
 import entities.enums.Status;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Task {
