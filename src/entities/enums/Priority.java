@@ -1,7 +1,7 @@
 package entities.enums;
 
 public enum Priority {
-  HIGH,
+  LOW,
   MEDIUM,
-  LOW;
+  HIGH;
 }

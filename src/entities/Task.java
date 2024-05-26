@@ -4,18 +4,23 @@ import entities.enums.Priority;
 import entities.enums.Status;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Task {
   private String title;
   private String description;
-  private LocalDate dueDate;
+  private Date dueDate;
   private Priority priority;
   private Status status;
 
-  public Task() {
+  public Task(String title, String description, Priority priority, Status status) {
+    this.title = title;
+    this.description = description;
+    this.priority = priority;
+    this.status = status;
   }
 
-  public Task(String title, String description, LocalDate dueDate, Priority priority, Status status) {
+  public Task(String title, String description, Date dueDate, Priority priority, Status status) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -39,11 +44,11 @@ public class Task {
     this.description = description;
   }
 
-  public LocalDate getDueDate() {
+  public Date getDueDate() {
     return dueDate;
   }
 
-  public void setDueDate(LocalDate dueDate) {
+  public void setDueDate(Date dueDate) {
     this.dueDate = dueDate;
   }
 
