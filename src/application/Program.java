@@ -20,8 +20,8 @@ public class Program {
       System.out.println("#Task Manager:");
       System.out.println("What you what to do? ");
       System.out.println("Add Tasks (a)");
-      System.out.println("Update Tasks (u)");
       System.out.println("Remove Tasks (r)");
+      System.out.println("Update Tasks (u)");
       char command = sc.nextLine().charAt(0);
       String description = null;
       Date dueDate = null;
@@ -53,11 +53,49 @@ public class Program {
         System.out.println();
         System.out.println("-------------------------------------------------");
         System.out.println();
-      } else {
+      } else if (command == 'r') {
         System.out.print("Which task you what to delete (number)? ");
         tasks.remove(sc.nextInt() - 1);
         sc.nextLine();
         System.out.println();
+      } else {
+        System.out.print("Which task you what to update (number)? ");
+        int number = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Update task " + number + ":");
+        System.out.print("what do you what to update (title/description/duedate/priority/status)? ");
+        String tets = sc.nextLine();
+        if (tets.equals("title")) {
+          System.out.println("Actual Title: " + tasks.get(number - 1).getTitle());
+          System.out.print("New Title: ");
+          String ty = sc.nextLine();
+          tasks.get(number - 1).setTitle(ty);
+          System.out.println();
+        } else if (tets.equals("description")) {
+          System.out.println("Actual Description: " + tasks.get(number - 1).getDescription());
+          System.out.print("New Description: ");
+          String tye = sc.nextLine();
+          tasks.get(number - 1).setDescription(tye);
+          System.out.println();
+        } else if (tets.equals("duedate")) {
+          System.out.println("Actual Due date: " + sdf.format(tasks.get(number - 1).getDueDate()));
+          System.out.print("New Due date: ");
+          Date tyc = sdf.parse(sc.nextLine());
+          tasks.get(number - 1).setDueDate(tyc);
+          System.out.println();
+        } else if (tets.equals("priority")) {
+          System.out.println("Actual Priority: " + tasks.get(number - 1).getPriority());
+          System.out.print("New Priority: ");
+          Priority tye = Priority.valueOf(sc.nextLine().toUpperCase());
+          tasks.get(number - 1).setPriority(tye);
+          System.out.println();
+        } else if (tets.equals("status")) {
+          System.out.println("Actual Status: " + tasks.get(number - 1).getStatus());
+          System.out.print("New Status: ");
+          Status tye = Status.valueOf(sc.nextLine().toUpperCase());
+          tasks.get(number - 1).setStatus(tye);
+          System.out.println();
+        }
       }
 
       System.out.println("Tasks: ");
