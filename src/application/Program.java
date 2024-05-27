@@ -65,7 +65,7 @@ public class Program {
           if (command == 'r') {
             System.out.print("Which task you what to delete (number)? ");
             int removeChoice = sc.nextInt();
-            if (removeChoice > tasks.size() || removeChoice < tasks.size()) {
+            if (removeChoice > tasks.size() || removeChoice < 0) {
               throw new TaskException("You task list just have " + tasks.size() + " task(s)");
             }
             tasks.remove(removeChoice - 1);
@@ -74,7 +74,7 @@ public class Program {
           } else if (command == 'u') {
             System.out.print("Which task you what to update (number)? ");
             int taskNumber = sc.nextInt();
-            if (taskNumber > tasks.size() || taskNumber < tasks.size()) {
+            if (taskNumber > tasks.size() || taskNumber < 0) {
               throw new TaskException("You task list just have " + tasks.size() + " task(s)");
             }
             sc.nextLine();
