@@ -5,6 +5,7 @@ import entities.enums.Priority;
 import entities.enums.Status;
 import entities.exceptions.TaskException;
 
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -24,6 +25,7 @@ public class Program {
         System.out.println("Add Tasks (a)");
         System.out.println("Remove Tasks (r)");
         System.out.println("Update Tasks (u)");
+        System.out.println("Download Task (d):");
         char command = sc.nextLine().charAt(0);
         String description = null;
         Date dueDate = null;
@@ -85,8 +87,42 @@ public class Program {
               throw new TaskException("Invalid Value!");
             }
             testUpdate(updateDecision, tasks, taskNumber);
+          } else if (command == 'd') {
+            System.out.println("Enter folder (\\folder):");
+            String strFile = sc.nextLine();
+
+            File source = new File(strFile);
+
+            String tt = source + "\\tasks.txt";
+            File target = new File(tt);
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(target))) {
+              bw.write("Tasks:");
+              bw.newLine();
+              for (int i = 0; i < tasks.size(); i++) {
+                bw.write("Task " + (i + 1) + ":");
+                bw.newLine();
+                bw.write("Title: " + tasks.get(i).getTitle());
+                bw.newLine();
+                if (tasks.get(i).getDescription() != null) {
+                  bw.write("Description: " + tasks.get(i).getDescription());
+                  bw.newLine();
+                }
+                if (tasks.get(i).getDueDate() != null) {
+                  bw.write("Due Date: " + sdf.format(tasks.get(i).getDueDate()));
+                  bw.newLine();
+                }
+                bw.write("Priority: " + tasks.get(i).getPriority());
+                bw.newLine();
+                bw.write("Status: " + tasks.get(i).getStatus());
+                bw.newLine();
+              }
+              System.out.println("Downloaded successfully!");
+            } catch (IOException e) {
+              System.out.println("Error writing file: " + e.getMessage());
+            }
           } else {
-            throw new TaskException("Invalid command! valid commands are (a/r/u)");
+            throw new TaskException("Invalid command! valid commands are (a/r/u/d)");
           }
         } else {
           throw new TaskException("You dont have tasks!");

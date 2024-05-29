@@ -35,6 +35,7 @@ public class UI {
         print(i, tasks, sdf);
         System.out.print(ANSI_RESET);
       } else {
+        System.out.println("# Task " + (i + 1) + ":");
         print(i, tasks, sdf);
       }
     }
