@@ -1,10 +1,15 @@
 package application;
 
 import entities.Task;
+import entities.enums.Priority;
 import entities.enums.Status;
+import entities.exceptions.TaskException;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class UI {
   public static final String ANSI_RESET = "\u001B[0m";
@@ -26,22 +31,95 @@ public class UI {
   public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
   public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
-  public static void printAll(List<Task> tasks, SimpleDateFormat sdf) {
-    System.out.println("Tasks: ");
-    for (int i = 0; i < tasks.size(); i++) {
-      if (tasks.get(i).getStatus() == Status.COMPLETED) {
-        System.out.print(ANSI_WHITE);
-        System.out.println("# Task " + (i + 1) + ":");
-        print(i, tasks, sdf);
-        System.out.print(ANSI_RESET);
-      } else {
-        System.out.println("# Task " + (i + 1) + ":");
-        print(i, tasks, sdf);
+  public static void printInterface() {
+    System.out.println("-------------------------------------------------");
+    System.out.println("Task Manager");
+    System.out.println("-------------------------------------------------");
+    System.out.println("a - Add Task");
+    System.out.println("r - Remove Task");
+    System.out.println("u - Update Task");
+    System.out.println("d - Download Task");
+    System.out.println("-------------------------------------------------");
+    System.out.print("Type command: ");
+  }
+
+  public static Task getAddTaskInput(Scanner sc, SimpleDateFormat sdf) throws ParseException {
+    System.out.println("Add Task:");
+    System.out.print("Title: ");
+    String title = sc.nextLine();
+    System.out.print("Description? (y/n) ");
+    char descriptionInput = sc.nextLine().charAt(0);
+    String description = null;
+    if (descriptionInput == 'y') {
+      System.out.print("Description: ");
+      description = sc.nextLine();
+    }
+    System.out.print("Due Date? (y/n) ");
+    char dueDateInput = sc.nextLine().charAt(0);
+    Date dueDate = null;
+    if (dueDateInput == 'y') {
+      System.out.print("Due Date (dd/MM/yyyy): ");
+      dueDate = sdf.parse(sc.nextLine());
+    }
+    System.out.print("Priority (LOW/MEDIUM/HIGH): ");
+    String priority = sc.nextLine().toUpperCase();
+    if (!priority.equals("LOW") && !priority.equals("MEDIUM") && !priority.equals("HIGH")) {
+      throw new TaskException("Invalid Priority! Valid Priorities are (LOW/MEDIUM/HIGH)");
+    }
+    System.out.print("Status (PENDING/ONGOING/COMPLETED): ");
+    String status = sc.nextLine().toUpperCase();
+    if (!status.equals("PENDING") && !status.equals("ONGOING") && !status.equals("COMPLETED")) {
+      throw new TaskException("Invalid Status! Valid Statuses are (PENDING/ONGOING/COMPLETED)");
+    }
+    return new Task(title, description, dueDate, Priority.valueOf(priority), Status.valueOf(status));
+  }
+
+  public static int getRemoveTaskInput(Scanner sc, int tasksSize) {
+    System.out.print("Which Task you what to remove (number)? ");
+    int removeChoice = sc.nextInt();
+    sc.nextLine();
+    if (removeChoice > tasksSize || removeChoice < 1) {
+      throw new TaskException("Your Task List just have " + tasksSize + " task(s)");
+    }
+    return removeChoice;
+  }
+
+  public static int getUpdateTaskInput(Scanner sc, int tasksSize) {
+    System.out.print("Which Task you what to update (number)? ");
+    int updateChoice = sc.nextInt();
+    sc.nextLine();
+    if (updateChoice > tasksSize || updateChoice < 1) {
+      throw new TaskException("Your Task List just have " + tasksSize + " task(s)");
+    }
+    return updateChoice;
+  }
+
+  public static String getDownloadFileInput(Scanner sc) {
+    System.out.println("type path (\\pasta):");
+    return sc.nextLine();
+  }
+
+  public static void printList(List<Task> tasks, SimpleDateFormat sdf) {
+    System.out.println();
+    System.out.println("-------------------------------------------------");
+    if (tasks.isEmpty()) {
+      System.out.println("Task List is Empty.");
+    } else {
+      for (int i = 0; i < tasks.size(); i++) {
+        if (tasks.get(i).getStatus() == Status.COMPLETED) {
+          System.out.print(ANSI_WHITE);
+          printTask(tasks, sdf, i);
+          System.out.print(ANSI_RESET);
+        } else {
+          printTask(tasks, sdf, i);
+        }
+        System.out.println("-------------------------------------------------");
       }
     }
   }
 
-  public static void print(int i, List<Task> tasks, SimpleDateFormat sdf) {
+  public static void printTask(List<Task> tasks, SimpleDateFormat sdf, int i) {
+    System.out.println("Task " + (i + 1) + ":");
     System.out.println("Title: " + tasks.get(i).getTitle());
     if (tasks.get(i).getDescription() != null) {
       System.out.println("Description: " + tasks.get(i).getDescription());
@@ -50,6 +128,10 @@ public class UI {
       System.out.println("Due Date: " + sdf.format(tasks.get(i).getDueDate()));
     }
     System.out.println("Priority: " + tasks.get(i).getPriority());
+    testStatus(i, tasks);
+  }
+
+  public static void testStatus(int i, List<Task> tasks) {
     if (tasks.get(i).getStatus() == Status.COMPLETED) {
       System.out.println("Status: " + ANSI_GREEN_BACKGROUND + ANSI_BLACK + tasks.get(i).getStatus() + ANSI_RESET);
     } else if (tasks.get(i).getStatus() == Status.PENDING) {
