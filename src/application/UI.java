@@ -7,6 +7,7 @@ import entities.exceptions.TaskException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -99,7 +100,9 @@ public class UI {
     return sc.nextLine();
   }
 
-  public static void printList(List<Task> tasks, SimpleDateFormat sdf) {
+  public static void printList(List<Task> tasks, Comparator<Task> comparator) {
+    tasks = tasks.stream().sorted(comparator).toList();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     System.out.println();
     System.out.println("-------------------------------------------------");
     if (tasks.isEmpty()) {

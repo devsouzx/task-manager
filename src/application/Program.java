@@ -2,18 +2,14 @@ package application;
 
 import entities.Task;
 import entities.TaskService;
-import entities.enums.Priority;
-import entities.enums.Status;
 import entities.exceptions.TaskException;
 
-import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Program {
   public static void main(String[] args) throws ParseException {
-    Locale.setDefault(Locale.US);
     Scanner sc = new Scanner(System.in);
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     TaskService taskService = new TaskService();
@@ -34,7 +30,7 @@ public class Program {
             if (tasks.isEmpty()) {
               throw new TaskException("Tasks List is Empty!");
             }
-            UI.printList(tasks, sdf);
+            UI.printList(tasks, (t1, t2) -> t1.getStatus().compareTo(t2.getStatus()));
             int removeChoice = UI.getRemoveTaskInput(sc, tasks.size());
             tasks.remove(removeChoice - 1);
             System.out.println("Task removed with success!");
@@ -43,7 +39,7 @@ public class Program {
             if (tasks.isEmpty()) {
               throw new TaskException("Tasks List is Empty!");
             }
-            UI.printList(tasks, sdf);
+            UI.printList(tasks, (t1, t2) -> t1.getStatus().compareTo(t2.getStatus()));
             int updateChoice = UI.getUpdateTaskInput(sc, tasks.size());
             taskService.updateTask(tasks, updateChoice - 1, sc, sdf);
             System.out.println("Task updated with success!");
@@ -60,8 +56,7 @@ public class Program {
             throw new TaskException("Invalid Command! Valid commands are (a/r/u/d)");
         }
 
-        Collections.sort(tasks);
-        UI.printList(tasks, sdf);
+        UI.printList(tasks, (t1, t2) -> t1.getStatus().compareTo(t2.getStatus()));
       }
       catch (TaskException e) {
         System.out.println(e.getMessage());

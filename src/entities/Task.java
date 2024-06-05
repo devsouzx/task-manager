@@ -5,7 +5,7 @@ import entities.enums.Status;
 
 import java.util.Date;
 
-public class Task implements Comparable<Task> {
+public class Task {
   private String title;
   private String description;
   private Date dueDate;
@@ -65,10 +65,5 @@ public class Task implements Comparable<Task> {
 
   public void setStatus(Status status) {
     this.status = status;
-  }
-
-  @Override
-  public int compareTo(Task other) {
-    return status.compareTo(other.getStatus());
   }
 }
