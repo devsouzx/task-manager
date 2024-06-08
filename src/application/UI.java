@@ -15,22 +15,11 @@ import java.util.Scanner;
 public class UI {
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_BLACK = "\u001B[30m";
-  public static final String ANSI_RED = "\u001B[31m";
-  public static final String ANSI_GREEN = "\u001B[32m";
-  public static final String ANSI_YELLOW = "\u001B[33m";
-  public static final String ANSI_BLUE = "\u001B[34m";
-  public static final String ANSI_PURPLE = "\u001B[35m";
-  public static final String ANSI_CYAN = "\u001B[36m";
   public static final String ANSI_WHITE = "\u001B[37m";
 
-  public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
   public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
   public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
   public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
-  public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
-  public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
-  public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
-  public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
   public static void printInterface() {
     System.out.println("-------------------------------------------------");
@@ -44,7 +33,8 @@ public class UI {
     System.out.print("Type command: ");
   }
 
-  public static Task getAddTaskInput(Scanner sc, SimpleDateFormat sdf) throws ParseException {
+  public static Task getAddTaskInput(Scanner sc) throws ParseException {
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     System.out.println("Add Task:");
     System.out.print("Title: ");
     String title = sc.nextLine();
@@ -68,28 +58,8 @@ public class UI {
     return new Task(title, description, dueDate, Priority.valueOf(priority), Status.valueOf(status));
   }
 
-  public static int getRemoveTaskInput(Scanner sc, int tasksSize) {
-    System.out.print("Which Task you what to remove (number)? ");
-    int removeChoice = sc.nextInt();
-    sc.nextLine();
-    if (removeChoice > tasksSize || removeChoice < 1) {
-      throw new TaskException("Your Task List just have " + tasksSize + " task(s)");
-    }
-    return removeChoice;
-  }
-
-  public static int getUpdateTaskInput(Scanner sc, int tasksSize) {
-    System.out.print("Which Task you what to update (number)? ");
-    int updateChoice = sc.nextInt();
-    sc.nextLine();
-    if (updateChoice > tasksSize || updateChoice < 1) {
-      throw new TaskException("Your Task List just have " + tasksSize + " task(s)");
-    }
-    return updateChoice;
-  }
-
   public static String getDownloadFileInput(Scanner sc) {
-    System.out.println("type path (\\pasta):");
+    System.out.println("type path (\\folder):");
     return sc.nextLine();
   }
 
@@ -116,6 +86,7 @@ public class UI {
 
   public static void printTask(List<Task> tasks, SimpleDateFormat sdf, int i) {
     System.out.println("Task " + (i + 1) + ":");
+    System.out.println("Id: " + tasks.get(i).getId());
     System.out.println("Title: " + tasks.get(i).getTitle());
     if (tasks.get(i).getDescription() != null) {
       System.out.println("Description: " + tasks.get(i).getDescription());

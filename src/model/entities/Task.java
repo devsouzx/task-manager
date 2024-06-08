@@ -6,6 +6,7 @@ import model.entities.enums.Status;
 import java.util.Date;
 
 public class Task {
+  private Integer id;
   private String title;
   private String description;
   private Date dueDate;
@@ -21,6 +22,14 @@ public class Task {
     this.dueDate = dueDate;
     this.priority = priority;
     this.status = status;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
   }
 
   public String getTitle() {
