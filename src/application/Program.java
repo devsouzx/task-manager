@@ -1,8 +1,12 @@
 package application;
 
-import entities.Task;
-import entities.TaskService;
-import entities.exceptions.TaskException;
+import model.dao.DaoFactory;
+import model.dao.TaskDao;
+import model.entities.Task;
+import model.entities.TaskService;
+import model.entities.enums.Priority;
+import model.entities.enums.Status;
+import model.entities.exceptions.TaskException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,17 +17,18 @@ public class Program {
     Scanner sc = new Scanner(System.in);
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     TaskService taskService = new TaskService();
+    TaskDao taskDao = DaoFactory.createTaskDao();
 
-    List<Task> tasks = new ArrayList<>();
-
+    List<Task> tasks = taskDao.findAll();
     while (true) {
+      UI.printList(tasks, (t1, t2) -> t1.getStatus().compareTo(t2.getStatus()));
       try {
         UI.printInterface();
         char command = sc.nextLine().charAt(0);
 
         switch (command) {
           case 'a':
-            tasks.add(UI.getAddTaskInput(sc, sdf));
+            taskDao.addTask(UI.getAddTaskInput(sc, sdf));
             System.out.println("Task added successfully!");
             break;
           case 'r':
@@ -56,7 +61,7 @@ public class Program {
             throw new TaskException("Invalid Command! Valid commands are (a/r/u/d)");
         }
 
-        UI.printList(tasks, (t1, t2) -> t1.getStatus().compareTo(t2.getStatus()));
+
       }
       catch (TaskException e) {
         System.out.println(e.getMessage());

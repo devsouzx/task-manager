@@ -1,7 +1,7 @@
-package entities;
+package model.entities;
 
-import entities.enums.Priority;
-import entities.enums.Status;
+import model.entities.enums.Priority;
+import model.entities.enums.Status;
 
 import java.util.Date;
 
@@ -12,11 +12,7 @@ public class Task {
   private Priority priority;
   private Status status;
 
-  public Task(String title, String description, Priority priority, Status status) {
-    this.title = title;
-    this.description = description;
-    this.priority = priority;
-    this.status = status;
+  public Task() {
   }
 
   public Task(String title, String description, Date dueDate, Priority priority, Status status) {

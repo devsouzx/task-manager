@@ -1,9 +1,9 @@
 package application;
 
-import entities.Task;
-import entities.enums.Priority;
-import entities.enums.Status;
-import entities.exceptions.TaskException;
+import model.entities.Task;
+import model.entities.enums.Priority;
+import model.entities.enums.Status;
+import model.entities.exceptions.TaskException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,20 +48,13 @@ public class UI {
     System.out.println("Add Task:");
     System.out.print("Title: ");
     String title = sc.nextLine();
-    System.out.print("Description? (y/n) ");
-    char descriptionInput = sc.nextLine().charAt(0);
-    String description = null;
-    if (descriptionInput == 'y') {
-      System.out.print("Description: ");
-      description = sc.nextLine();
-    }
-    System.out.print("Due Date? (y/n) ");
-    char dueDateInput = sc.nextLine().charAt(0);
-    Date dueDate = null;
-    if (dueDateInput == 'y') {
-      System.out.print("Due Date (dd/MM/yyyy): ");
-      dueDate = sdf.parse(sc.nextLine());
-    }
+
+    System.out.print("Description: ");
+    String description = sc.nextLine();
+
+    System.out.print("Due Date (dd/MM/yyyy): ");
+    Date dueDate = sdf.parse(sc.nextLine());
+
     System.out.print("Priority (LOW/MEDIUM/HIGH): ");
     String priority = sc.nextLine().toUpperCase();
     if (!priority.equals("LOW") && !priority.equals("MEDIUM") && !priority.equals("HIGH")) {

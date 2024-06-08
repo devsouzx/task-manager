@@ -1,11 +1,10 @@
-package entities;
+package model.entities;
 
-import entities.enums.Priority;
-import entities.enums.Status;
-import entities.exceptions.TaskException;
+import model.entities.enums.Priority;
+import model.entities.enums.Status;
+import model.entities.exceptions.TaskException;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
@@ -35,9 +34,6 @@ public class TaskService {
         tasks.get(taskNumber).setDescription(newDescription);
         break;
       case "duedate":
-        if (tasks.get(taskNumber).getDueDate() == null) {
-          tasks.get(taskNumber).setDueDate(Date.from(Instant.now()));
-        }
         System.out.println("Actual Due Date: " + sdf.format(tasks.get(taskNumber).getDueDate()));
         System.out.print("New Due Date: ");
         Date newDueDate = sdf.parse(sc.nextLine());
